@@ -1,0 +1,1743 @@
+import tkinter
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+from pil import ImageTk, Image
+from tkinter.ttk import Combobox, Treeview
+#from User import *
+import MySQLdb
+
+
+
+
+
+#profile
+class profile(Tk):
+    
+    def __init__(self):
+        
+            
+            
+        Tk.__init__(self)
+
+        self.title("Profile Account Details")   
+        self.geometry('650x500')
+        self.resizable(FALSE, FALSE)
+        #self.configure(width=500,height=300,background='lightblue')
+
+        lbl0 = Label(self,text='Profile Account Details',fg='green',bg='yellow',font=('helvetica',14,'bold'))
+        lbl0.place(x=90,y=10)
+
+        lbl2 = Label(self,text='Username',font=('Arial',12))     
+        lbl2.place(x=40,y=90)
+
+        self.usrname= Entry(self)
+        self.usrname.place(x=200,y=90)
+
+        lbl3=Label(self,text='Password',font=('Arial',12))
+        lbl3.place(x=40,y=120)
+        
+        self.password=Entry(self,show='*')
+        self.password.place(x=200,y=120)
+
+        lbl4=Label(self,text='Security Question',font=('Arial',12))
+        lbl4.place(x=40,y=150)
+        var = StringVar()
+        var.set(" ")
+
+        option=["What is your best friend name?","what is your favourite fruit?","what is the name of your first school?"]
+
+        self.cb = Combobox(self,values=option, textvariable=var,width=30) 
+        self.cb.place(x=200,y=150)
+
+        lbl5=Label(self,text='Security Answer',font=('Arial',12))
+        lbl5.place(x=40,y=180)
+
+        self.answer=Entry(self)
+        self.answer.place(x=200,y=180)
+
+        btn1 = Button(self,text='Save',command=self.save,activebackground = "pink", activeforeground = "blue",font=('Arial',12))
+        btn1.place(x=220,y=220)
+
+        
+    def save(self):
+            
+    #id_of_user= usrid.get()
+        name_of_user=self.usrname.get()
+        password_of_user=self.password.get()
+        sec_question=self.cb.get()
+        sec_answer=self.answer.get()
+
+        if( name_of_user=='' or password_of_user=='' or sec_answer==''):
+            messagebox.showinfo("Insert Status","All Fields are required")
+        else:
+            con = MySQLdb.connect(host='localhost',user='root',password='dbz1234',database="alphadb")
+            cursor=con.cursor()
+            sql = "INSERT INTO users(name, password, security_question, security_answer) VALUES (%s, %s, %s, %s)"
+            val = (name_of_user, password_of_user, sec_question, sec_answer)
+            cursor.execute(sql, val)
+            con.commit()
+            con.close()
+            messagebox.showinfo("Insert Status","Inserted Successfully")
+            self.usrname.delete(0, END)
+            self.password.delete(0, END)
+            self.cb.delete(0,'end')
+            self.answer.delete(0, END)
+
+class UserPersonalDetails(Tk):
+    def __init__(self): 
+        Tk.__init__(self)
+        
+  
+
+        
+        self.title("")
+        self.geometry('780x610')
+        self.resizable(FALSE, FALSE)
+
+        f1 = Frame(self, borderwidth=6)
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="white", highlightbackground="green", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="white")
+        l1 = Label(f3, text="User Personal Details", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+        
+     
+        
+        #name= Image.open(r"E:\SHE ARISE\Project-Alpha Inventory System\Admin.png")
+        #name=name.resize((200,200),Image.ANTIALIAS)
+        #test = ImageTk.PhotoImage(name)
+        #label1 = tkinter.Label(image=test)
+        #label1.image = test
+        #label1.place(x=525, y=81)
+        
+
+        f4 = Frame(f3, borderwidth=6)
+        l2 = Label(f4, text="Enter user Personal details here....!")
+        l2.pack(side=TOP, anchor='sw')
+        f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+
+        #l31 = Label(f5, text=" User ID")
+        #l31.grid(row=0, column=0,padx=40,pady=20)
+        #self.e0 = Entry(f5, width=20, font=(NONE, 15))
+        #self.e0.grid(row=0, column=1, padx=30)
+        
+        l32 = Label(f5, text=" Name")
+        l32.grid(row=1, column=0,padx=40,pady=20)
+        self.e1 = Entry(f5, width=20, font=(NONE, 15))
+        self.e1.grid(row=1, column=1, padx=30)
+        
+       
+        
+        l33 = Label(f5, text="D.O.B")
+        l33.grid(row=2, column=0, padx=40, pady=20)
+        self.cal = Entry(f5,width=20, font=(NONE, 15) )
+        self.cal.grid(row=2, column=1, padx=30)
+        
+        self.l35 = Label(f5, text="Address")
+        self.l35.grid(row=3, column=0, padx=40, pady=20)
+        self.e3 = Text(f5, height=2, width=20, font=(NONE, 15),exportselection=0)
+        self.e3.grid(row=3, column=1, padx=30)       
+        
+        l36 = Label(f5, text=" Mobile No")
+        l36.grid(row=4, column=0,padx=40,pady=20)
+        self.e4= Entry(f5, width=20, font=(NONE, 15))
+        self.e4.grid(row=4, column=1, padx=30)
+        
+        l37 = Label(f5, text=" Email Id")
+        l37.grid(row=5, column=0,padx=40,pady=20)
+        self.e5= Entry(f5, width=20, font=(NONE, 15))
+        self.e5.grid(row=5, column=1, padx=30)
+
+        f5.pack()
+        f4.pack(padx=20, pady=10)
+        f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue",background="#333333", highlightthickness=2)
+        #B1 = Button(f6, text="FIRST",bg="#00FFFF")
+        #B1.grid(row=0, column=0, padx=30,pady=5)
+        #B2 = Button(f6, text="PREV",bg="#00FFFF")
+        #B2.grid(row=0, column=1, padx=30,pady=5)
+        #B3 = Button(f6, text="NEXT",bg="#00FFFF")
+        #B3.grid(row=0, column=2, padx=30,pady=5)
+        #B4 = Button(f6, text="LAST",bg="#00FFFF")
+        #B4.grid(row=0, column=3, padx=30,pady=5)
+        B5 = Button(f6, text="SAVE",bg="#00FFFF",command=self.save)
+        B5.grid(row=1, column=1, padx=30,pady=5)
+        #B6 = Button(f6, text="DELETE",bg="#00FFFF")
+        #B6.grid(row=1, column=2, padx=30,pady=5)
+
+        f6.pack(fill=X, padx=20)
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="white")
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+        
+        
+               
+    def save(self):
+        #id_of_user= usrid.get()
+        name_of_user= self.e1.get()
+        dob = self.cal.get()
+        address=self.e3.get(1.0,END)
+        mobile=self.e4.get()
+        email=self.e5.get()
+        #password_of_user=password.get()
+        #sec_question=cb.get()
+        #sec_answer=answer.get()
+
+        if(name_of_user=='' and dob=='' and address=='' and mobile==''and email==''):
+            messagebox.showinfo("Insert Status","All Fields are required")
+        else:
+            con = MySQLdb.connect(host='localhost',user='root',password='dbz1234',database="alphadb")
+            cursor=con.cursor()
+            sql = "INSERT INTO user_personal(name,dob,address,mobile,email) VALUES ('"+name_of_user+"','"+dob+"','"+address+"','"+mobile+"','"+email+"')"
+            #val = (name_of_user, password_of_user, sec_question, sec_answer)
+            cursor.execute(sql)
+            con.commit()
+            con.close()
+            messagebox.showinfo("Insert Status","Inserted Successfully") 
+         
+        UserPersonalDetails()
+        
+        
+        
+        
+    #admin account
+        
+    #ADMIN- PERSONAL
+class AdminPersonalDetails(Tk):
+    def __init__(self): 
+        Tk.__init__(self)
+        
+  
+
+        
+        self.title("")
+        self.geometry('780x610')
+        self.resizable(FALSE, FALSE)
+
+        f1 = Frame(self, borderwidth=6)
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="white", highlightbackground="green", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="white")
+        l1 = Label(f3, text="Admin Personal Details", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+        
+        f4 = Frame(f3, borderwidth=6)
+        l2 = Label(f4, text="Enter user Personal details here....!")
+        l2.pack(side=TOP, anchor='sw')
+        f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+
+        #l31 = Label(f5, text=" User ID")
+        #l31.grid(row=0, column=0,padx=40,pady=20)
+        #self.e0 = Entry(f5, width=20, font=(NONE, 15))
+        #self.e0.grid(row=0, column=1, padx=30)
+        
+        l32 = Label(f5, text=" Name")
+        l32.grid(row=1, column=0,padx=40,pady=20)
+        self.e1 = Entry(f5, width=20, font=(NONE, 15))
+        self.e1.grid(row=1, column=1, padx=30)
+        
+       
+        
+        l33 = Label(f5, text="D.O.B")
+        l33.grid(row=2, column=0, padx=40, pady=20)
+        self.cal = Entry(f5,width=20, font=(NONE, 15) )
+        self.cal.grid(row=2, column=1, padx=30)
+        
+        self.l35 = Label(f5, text="Address")
+        self.l35.grid(row=3, column=0, padx=40, pady=20)
+        self.e3 = Text(f5, height=2, width=20, font=(NONE, 15),exportselection=0)
+        self.e3.grid(row=3, column=1, padx=30)       
+        
+        l36 = Label(f5, text=" Mobile No")
+        l36.grid(row=4, column=0,padx=40,pady=20)
+        self.e4= Entry(f5, width=20, font=(NONE, 15))
+        self.e4.grid(row=4, column=1, padx=30)
+        
+        l37 = Label(f5, text=" Email Id")
+        l37.grid(row=5, column=0,padx=40,pady=20)
+        self.e5= Entry(f5, width=20, font=(NONE, 15))
+        self.e5.grid(row=5, column=1, padx=30)
+
+        f5.pack()
+        f4.pack(padx=20, pady=10)
+        f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue",background="#333333", highlightthickness=2)
+        #B1 = Button(f6, text="FIRST",bg="#00FFFF")
+        #B1.grid(row=0, column=0, padx=30,pady=5)
+        #B2 = Button(f6, text="PREV",bg="#00FFFF")
+        #B2.grid(row=0, column=1, padx=30,pady=5)
+        #B3 = Button(f6, text="NEXT",bg="#00FFFF")
+        #B3.grid(row=0, column=2, padx=30,pady=5)
+        #B4 = Button(f6, text="LAST",bg="#00FFFF")
+        #B4.grid(row=0, column=3, padx=30,pady=5)
+        B5 = Button(f6, text="SAVE",bg="#00FFFF",command=self.save)
+        B5.grid(row=1, column=1, padx=30,pady=5)
+        #B6 = Button(f6, text="DELETE",bg="#00FFFF")
+        #B6.grid(row=1, column=2, padx=30,pady=5)
+
+        f6.pack(fill=X, padx=20)
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="white")
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+
+        
+               
+    def save(self):
+        #id_of_user= usrid.get()
+        name_of_user= self.e1.get()
+        dob = self.cal.get()
+        address=self.e3.get(1.0,END)
+        mobile=self.e4.get()
+        email=self.e5.get()
+        #password_of_user=password.get()
+        #sec_question=cb.get()
+        #sec_answer=answer.get()
+
+        if(name_of_user=='' and dob=='' and address=='' and mobile==''and email==''):
+            messagebox.showinfo("Insert Status","All Fields are required")
+        else:
+            con = MySQLdb.connect(host='localhost',user='root',password='dbz1234',database="alphadb")
+            cursor=con.cursor()
+            sql = "INSERT INTO user_personal(name,dob,address,mobile,email) VALUES ('"+name_of_user+"','"+dob+"','"+address+"','"+mobile+"','"+email+"')"
+            #val = (name_of_user, password_of_user, sec_question, sec_answer)
+            cursor.execute(sql)
+            con.commit()
+            con.close()
+            messagebox.showinfo("Insert Status","Inserted Successfully") 
+        
+        AdminPersonalDetails()
+        
+        
+class AdminAccDetails(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+        
+        
+        self.title("")
+        self.geometry('780x610')
+        self.resizable(FALSE, FALSE)
+            
+        f1 = Frame(self, borderwidth=6)
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="white", highlightbackground="green", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="white")
+        l1 = Label(f3, text="Admin Account Details", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+    
+  
+        f4 = Frame(f3, borderwidth=6)
+        l2 = Label(f4, text="Enter user Account details here....!")
+        l2.pack(side=TOP, anchor='sw')
+        f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+
+        
+        l31 = Label(f5, text=" Username")
+        l31.grid(row=1, column=0,padx=40,pady=20)
+        self.e2 = Entry(f5, width=20, font=(NONE, 15))
+        self.e2.grid(row=1, column=1, padx=30)
+        
+       
+        
+        l33 = Label(f5, text="Password")
+        l33.grid(row=2, column=0, padx=40, pady=20)
+        self.e3 = Entry(f5, width=20, font=(NONE, 15),show='*')
+        self.e3.grid(row=2, column=1, padx=30)
+        
+        
+        
+        var=StringVar()
+        var.set('Select...')
+        l32 = Label(f5, text="User Type")
+        l32.grid(row=3,column=0,padx=40,pady=20)
+        self.cb=Combobox(f5,values=["Administrative","User"],textvariable=var, height=1, width=35)
+        self.cb.grid(row=3, column=1, padx=30)
+        
+        var1=StringVar()
+        var1.set('Select...')
+        l34 = Label(f5, text="User Status")
+        l34.grid(row=4,column=0,padx=40,pady=20)
+        self.cb1=Combobox(f5,values=["Active","Inactive"],textvariable=var1, height=1, width=35)
+        self.cb1.grid(row=4, column=1, padx=30)    
+               
+
+        f5.pack()
+        f4.pack(padx=20, pady=10)
+        f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue",background="#333333", highlightthickness=2)
+        B1 = Button(f6, text="ADD",bg="#00FFFF",command=self.add)
+        B1.grid(row=0, column=0, padx=30,pady=5)
+
+
+        f6.pack(fill=X, padx=20)
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="white")
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+
+
+    def add(self):
+                #id_of_user= usrid.get()
+        name=self.e3.get()
+        usertype = self.cb.get()
+        userstatus=self.cb1.get()
+        password=self.e3.get()
+
+        #password_of_user=password.get()
+        #sec_question=cb.get()
+        #sec_answer=answer.get()
+
+        if(name=='' and usertype=='' and userstatus=='' and password==''):
+            messagebox.showinfo("Insert Status","All Fields are required")
+        else:
+            con = MySQLdb.connect(host='localhost',user='root',password='dbz1234',database="alphadb")
+            cursor=con.cursor()
+            sql = "INSERT INTO user_personal(name,Password,usertype,userstatus) VALUES ('"+name+"','"+password+"','"+usertype+"','"+userstatus+"')"
+            #val = (name_of_user, password_of_user, sec_question, sec_answer)
+            cursor.execute(sql)
+            con.commit()
+            con.close()
+            messagebox.showinfo("Insert Status","Inserted Successfully") 
+            AdminAccDetails()
+       
+    
+    #CUSTOMER
+        
+        
+class Loginwindow(Tk):
+    next1 = 0
+    update1=0
+    prev1=0
+    current=0
+    c=0
+    i=1
+    def __init__(self):
+        
+        Tk.__init__(self)
+        self.title("My contact book")
+        self.geometry('780x540')
+        self.resizable(FALSE, FALSE)
+
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        cursor.execute("select * from customer")
+        result=cursor.fetchall()
+
+
+        c1=len(result)
+        if c1!=0:
+            
+             Loginwindow.update1 = result[0][0]
+             f1=Frame(self, borderwidth=6)
+             f1.pack(fill=BOTH, expand=TRUE)
+
+             f2 = Frame(f1, bg="white", highlightbackground="green", highlightthickness=1)
+             f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+             f3 = Frame(f2, bg="white")
+             l1 = Label(f3, text="Customer Account Detail", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+             l1.pack(pady=8)
+
+             f4 = Frame(f3, borderwidth=6)
+             l2 = Label(f4, text="Enter profile personal details here....!")
+             l2.pack(side=TOP, anchor='sw')
+             f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+
+             self.l32 = Label(f5, text="Name")
+             self.l32.grid(row=0, column=0,padx=40,pady=20)
+             self.e2 = Entry(f5, width=20, font=(NONE, 15))
+             self.e2.grid(row=0, column=1, padx=30)
+             self.e2.insert(END,result[0][1])
+
+             self.l33 = Label(f5, text="Address")
+             self.l33.grid(row=1, column=0, padx=40, pady=20)
+             self.e3 = Text(f5, height=4, width=20, font=(NONE, 15))
+             self.e3.grid(row=1, column=1, padx=30)
+             self.e3.insert(END, result[0][2])
+
+             self.l31 = Label(f5, text="Phone No")
+             self.l31.grid(row=2, column=0, padx=40, pady=20)
+             self.e4 = Entry(f5, width=20, font=(NONE, 15))
+             self.e4.grid(row=2, column=1, padx=30)
+             self.e4.insert(END, result[0][3])
+
+             self.l31 = Label(f5, text="Email")
+             self.l31.grid(row=3, column=0, padx=40, pady=20)
+             self.e1 = Entry(f5, width=20, font=(NONE, 15))
+             self.e1.grid(row=3, column=1, padx=30)
+             self.e1.insert(END, result[0][4])
+             f5.pack()
+             f4.pack(padx=20, pady=10)
+             f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue", highlightthickness=2)
+             self.B1 = Button(f6, text="First",command = self.first_button)
+             self.B1.grid(row=0, column=0, padx=30,pady=5)
+             self.B2 = Button(f6, text="Previous",command=self.previous_button)
+             self.B2.grid(row=0, column=1, padx=30,pady=5)
+             self.B3 = Button(f6, text="Next",command=self.next)
+             self.B3.grid(row=0, column=2, padx=30,pady=5)
+             self.B4 = Button(f6, text="Last",command =self.last_button)
+             self.B4.grid(row=0, column=3, padx=30,pady=5)
+             self.B6 = Button(f6, text="Update",command=self.update)
+             self.B6.grid(row=1, column=1, padx=30,pady=5)
+             self.B7 = Button(f6, text="Delete",command=self.delete)
+             self.B7.grid(row=1, column=2, padx=30,pady=5)
+             f6.pack(fill=X, padx=20)
+             f3.pack(side=LEFT, fill=Y)
+             #self.img =Image.open(r"E:\SHE ARISE\Project-Alpha Inventory System\user.png")
+             #self.c1=ImageTk.PhotoImage(self.img)
+             f7 = Frame(f2, relief="solid", bg="white")
+             f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+             #l=Label(f7,image=self.c1)
+             #l.pack(side=TOP, anchor='sw',pady=50)
+        else:
+            f1 = Frame(self, borderwidth=6)
+            f1.pack(fill=BOTH, expand=TRUE)
+
+            f2 = Frame(f1, bg="white", highlightbackground="green", highlightthickness=1)
+            f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+            f3 = Frame(f2, bg="white")
+            l1 = Label(f3, text="Customer Account Detail", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+            l1.pack(pady=8)
+
+            f4 = Frame(f3, borderwidth=6)
+            l2 = Label(f4, text="Enter profile personal details here....!")
+            l2.pack(side=TOP, anchor='sw')
+            f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+
+            self.l32 = Label(f5, text="Name")
+            self.l32.grid(row=0, column=0, padx=40, pady=20)
+            self.e2 = Entry(f5, width=20, font=(NONE, 15))
+            self.e2.grid(row=0, column=1, padx=30)
+
+
+            self.l33 = Label(f5, text="Address")
+            self.l33.grid(row=1, column=0, padx=40, pady=20)
+            self.e3 = Text(f5, height=4, width=20, font=(NONE, 15))
+            self.e3.grid(row=1, column=1, padx=30)
+
+
+            self.l31 = Label(f5, text="Phone No")
+            self.l31.grid(row=2, column=0, padx=40, pady=20)
+            self.e4 = Entry(f5, width=20, font=(NONE, 15))
+            self.e4.grid(row=2, column=1, padx=30)
+
+
+            self.l31 = Label(f5, text="Email")
+            self.l31.grid(row=3, column=0, padx=40, pady=20)
+            self.e1 = Entry(f5, width=20, font=(NONE, 15))
+            self.e1.grid(row=3, column=1, padx=30)
+
+            f5.pack()
+            f4.pack(padx=20, pady=10)
+            f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue", highlightthickness=2)
+            self.B1 = Button(f6, text="First", command=self.first_button)
+            self.B1.grid(row=0, column=0, padx=30, pady=5)
+            self.B2 = Button(f6, text="Previous", command=self.previous_button)
+            self.B2.grid(row=0, column=1, padx=30, pady=5)
+            self.B3 = Button(f6, text="Next", command=self.next)
+            self.B3.grid(row=0, column=2, padx=30, pady=5)
+            self.B4 = Button(f6, text="Last", command=self.last_button)
+            self.B4.grid(row=0, column=3, padx=30, pady=5)
+            self.B6 = Button(f6, text="Update", command=self.update)
+            self.B6.grid(row=1, column=1, padx=30, pady=5)
+            self.B7 = Button(f6, text="Delete", command=self.delete)
+            self.B7.grid(row=1, column=2, padx=30, pady=5)
+            f6.pack(fill=X, padx=20)
+            f3.pack(side=LEFT, fill=Y)
+            #self.img = Image.open(r"E:\SHE ARISE\Project-Alpha Inventory System\user.png")
+            #self.c1 = ImageTk.PhotoImage(self.img)
+            f7 = Frame(f2, relief="solid", bg="white")
+            f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+            #l = Label(f7, image=self.c1)
+            #l.pack(side=TOP, anchor='sw', pady=50)
+            self.B1.config(state='disable')
+            self.B2.config(state='disable')
+            self.B3.config(state='disable')
+            self.B4.config(state='disable')
+            self.B6.config(state='disable')
+            self.B7.config(state='disable')
+    def first_button(self):
+        
+        Loginwindow.next1=0
+        Loginwindow.prev1=0
+        Loginwindow.current=0
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        cursor.execute("select * from customer")
+        result = cursor.fetchone()
+        print(self.next1,"n")
+        print(self.prev1,"p")
+        self.e2.delete(0,END)
+        self.e3.delete(1.0,END)
+        self.e4.delete(0,END)
+        self.e1.delete(0,END)
+        Loginwindow.update1 = result[0]
+        self.e2.insert(END, result[1])
+        self.e3.insert(END, result[2])
+        self.e4.insert(END, result[3])
+        self.e1.insert(END, result[4])
+
+
+    def previous_button(self):
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        cursor.execute("select * from customer")
+        m1 = cursor.fetchall()
+        t=len(m1)
+        if Loginwindow.prev1<=0:
+            Loginwindow.current=0
+
+
+
+
+        else :
+             Loginwindow.prev1=Loginwindow.next1-1
+             Loginwindow.current=Loginwindow.next1-1
+             Loginwindow.update1 = m1[self.prev1][0]
+             Loginwindow.next1=Loginwindow.prev1
+             self.e2.delete(0, END)
+             self.e3.delete(1.0, END)
+             self.e4.delete(0, END)
+             self.e1.delete(0, END)
+             self.e2.insert(END, m1[self.prev1][1])
+             self.e3.insert(END, m1[self.prev1][2])
+             self.e4.insert(END, m1[self.prev1][3])
+             self.e1.insert(END, m1[self.prev1][4])
+             Loginwindow.i+=1
+
+
+    def next(self):
+        
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        cursor.execute("select * from customer")
+        m1=cursor.fetchall()
+        t=len(m1)
+        if Loginwindow.next1>=t-1:
+            pass
+        else:
+            
+             Loginwindow.next1=Loginwindow.prev1+1
+             Loginwindow.prev1=Loginwindow.next1
+             Loginwindow.current=Loginwindow.prev1
+             Loginwindow.update1=m1[self.next1][0]
+             self.e2.delete(0, END)
+             self.e3.delete(1.0, END)
+             self.e4.delete(0, END)
+             self.e1.delete(0, END)
+             self.e2.insert(END, m1[self.next1][1])
+             self.e3.insert(END, m1[self.next1][2])
+             self.e4.insert(END, m1[self.next1][3])
+             self.e1.insert(END, m1[self.next1][4])
+
+
+    def last_button(self):
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        cursor.execute("select * from customer")
+        result = cursor.fetchall()
+        t=len(result)
+        m=result[t-1]
+        result1=len(result)
+        Loginwindow.next1=t-1
+        Loginwindow.prev1=t-1
+        Loginwindow.current=t-1
+        Loginwindow.update1 =m[0]
+        print(Loginwindow.next1)
+        self.e2.delete(0, END)
+        self.e3.delete(1.0, END)
+        self.e4.delete(0, END)
+        self.e1.delete(0, END)
+
+
+        self.e2.insert(END, m[1])
+        self.e3.insert(END, m[2])
+        self.e4.insert(END, m[3])
+        self.e1.insert(END, m[4])
+
+
+    def update(self):
+        c=Loginwindow.update1
+        print(c)
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+
+        query=""" UPDATE customer SET name=%s,adress=%s,phoneno=%s,email=%s WHERE id=%s """
+        t1=self.e2.get()
+        t2=self.e3.get(1.0,END)
+        t3=self.e4.get()
+        t4=self.e1.get()
+        data=(t1,t2,t3,t4,c)
+        cursor.execute(query,data)
+        mydb.commit()
+        mydb.close()
+        messagebox.showinfo("success message", "customer details are updated successfully")
+        result = cursor.fetchone()
+        print(result)
+        Loginwindow()
+    def delete(self):
+        c = Loginwindow.update1
+
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        query = """delete from customer where id=%s"""
+        c1 = (c,)
+        print(c1)
+        cursor.execute(query, c1)
+        result = cursor.fetchone()
+
+        mydb.commit()
+        mydb.close()
+        messagebox.showinfo("success message", "customer details are deleted successfully")
+        mydb = MySQLdb.connect(host='localhost',user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        cursor.execute("select * from customer")
+        m1 = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        if len(m1)==0:
+            self.e2.delete(0, END)
+            self.e3.delete(1.0, END)
+            self.e4.delete(0, END)
+            self.e1.delete(0, END)
+            self.B1.config(state='disable')
+            self.B2.config(state='disable')
+            self.B3.config(state='disable')
+            self.B4.config(state='disable')
+            self.B6.config(state='disable')
+            self.B7.config(state='disable')
+            return
+
+        if Loginwindow.current>len(m1)-1:
+            Loginwindow.current=Loginwindow.current-1
+            Loginwindow.next1=Loginwindow.current
+
+        self.e2.delete(0, END)
+        self.e3.delete(1.0, END)
+        self.e4.delete(0, END)
+        self.e1.delete(0, END)
+        print(Loginwindow.current,'************')
+
+        self.e2.insert(END, m1[self.current][1])
+        self.e3.insert(END, m1[self.current][2])
+        self.e4.insert(END, m1[self.current][3])
+        self.e1.insert(END, m1[self.current][4])
+        Loginwindow.update1=m1[self.current][0]
+        Loginwindow()
+        
+        
+       #CUSTOMER-ACCOUNT
+    
+class CustomerAccDetails(Tk):
+   
+    def __init__(self): 
+        Tk.__init__(self)
+        
+        
+        self.title("")
+        self.geometry('780x500')
+        self.resizable(FALSE, FALSE)
+    
+
+        f1 = Frame(self, borderwidth=6)
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="white", highlightbackground="green", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="white")
+        l1 = Label(f3, text=" Customer Account Details", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+        
+        
+        
+        
+
+        f4 = Frame(f3, borderwidth=6)
+        l2 = Label(f4, text="Enter user Personal details here....!")
+        l2.pack(side=TOP, anchor='sw')
+        f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+        
+        #name= Image.open(r"E:\SHE ARISE\Project-Alpha Inventory System\Admin.png")
+        #name=name.resize((200,200),Image.ANTIALIAS)
+        #test = ImageTk.PhotoImage(name)
+        #label1 = tkinter.Label(f5,image=test)
+        #label1.image = test
+        #label1.place(x=525, y=81)
+        #label1.grid(row=0, column=1)
+       
+    
+        
+        l31 = Label(f5, text=" Name")
+        l31.grid(row=1, column=0,padx=40,pady=20)
+        self.e2 = Entry(f5, width=20, font=(NONE, 15))
+        self.e2.grid(row=1, column=1, padx=30)
+        
+       
+        
+        
+        
+        l35 = Label(f5, text="Address")
+        l35.grid(row=3, column=0, padx=40, pady=20)
+        self.e3 = Text(f5, height=2, width=20, font=(NONE, 15),exportselection=0)
+        self.e3.grid(row=3, column=1, padx=30)       
+        
+        l36 = Label(f5, text=" Phone No")
+        l36.grid(row=4, column=0,padx=40,pady=20)
+        self.e4= Entry(f5, width=20, font=(NONE, 15))
+        self.e4.grid(row=4, column=1, padx=30)
+        
+        l37 = Label(f5, text=" Email Id")
+        l37.grid(row=5, column=0,padx=40,pady=20)
+        self.e5= Entry(f5, width=20, font=(NONE, 15))
+        self.e5.grid(row=5, column=1, padx=30)
+
+        f5.pack()
+        f4.pack(padx=20, pady=10)
+        f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue",background="#333333", highlightthickness=2)
+        B1 = Button(f6, text="SAVE",bg="#00FFFF",command=self.save)
+        B1.grid(row=0, column=0, padx=200,pady=5)
+       
+    
+        f6.pack(fill=X, padx=20)
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="white")
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+        
+    def save(self):
+        
+     
+    
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        t1=self.e2.get()
+        t2=self.e3.get(1.0,END)
+        t3=self.e4.get()
+        t4=self.e5.get()
+        query=" INSERT into customer(name,adress,phoneno,email) values('"+t1+"', '"+t2+"','"+t3+"','"+t4+"') "
+    
+        
+        cursor.execute(query)
+        mydb.commit()
+        mydb.close()
+        messagebox.showinfo("success message", "customer details are inserted successfully")
+        result = cursor.fetchone()
+        print(result)
+        CustomerAccDetails()
+    
+    
+    
+    
+    
+    
+    
+        
+        
+        
+        
+     #product_master
+    
+    
+class AddProduct(Tk):
+    def __init__(self):
+        
+        Tk.__init__(self)
+
+        self.title("")
+        self.geometry('1050x600+200+100')
+        self.resizable(FALSE, FALSE)
+
+        f1 = Frame(self, borderwidth=6,bg="#D3D3D3") 
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="#A9A9A9", highlightbackground="#696969", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="#A9A9A9")
+        l1 = Label(f3, text="Add Product", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+
+        f4 = Frame(f3, borderwidth=6)
+        l2 = Label(f4, text="Enter product details here....!")
+        l2.pack(side=TOP, anchor='sw')
+        f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+
+        var=StringVar()
+        var.set('Select...')
+
+        self.l31 = Label(f5, text=" Product Name")
+        self.l31.grid(row=0, column=0,padx=40,pady=20)
+        self.e2 = Entry(f5, width=20, font=(NONE, 15))
+        self.e2.grid(row=0, column=1, padx=30)
+
+
+        self.l32 = Label(f5, text="Category")
+        self.l32.grid(row=1,column=0,padx=40,pady=20)
+        self.cb1=Combobox(f5,values=["Bakery","Vegetables","Fruits"],textvariable=var)
+        self.cb1.grid(row=1, column=1, padx=30)
+
+        self.l33 = Label(f5, text="Price")
+        self.l33.grid(row=2, column=0, padx=40, pady=20)
+        self.e4 = Entry(f5, width=20, font=(NONE, 15))
+        self.e4.grid(row=2, column=1, padx=30)
+
+        self.l34 = Label(f5, text="Quantity")
+        self.l34.grid(row=3, column=0, padx=40, pady=20)
+        self.spin2= Spinbox(f5,bg='white',fg='black', from_=0, to=50)
+        self.spin2.grid(row=3, column=1, padx=30)
+
+        self.l35 = Label(f5, text="Description")
+        self.l35.grid(row=4, column=0, padx=40, pady=20)
+        self.e3 = Text(f5, height=4, width=20, font=(NONE, 15),exportselection=0)
+        self.e3.grid(row=4, column=1, padx=30)    
+
+
+        f5.pack()
+        f4.pack(padx=20, pady=10)
+        f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue",background="#333333", highlightthickness=2)
+        B1 = Button(f6, text="ADD PRODUCT",bg="#00FFFF",command=self.add_data)
+        B1.grid(row=0, column=0, padx=30,pady=5)
+        B2 = Button(f6, text="RESET",bg="#00FFFF")
+        B2.grid(row=0, column=1, padx=30,pady=5)
+
+        f6.pack(fill=X, padx=20,pady=10)
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="#A9A9A9")
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)   
+
+
+        self.tree1 = Treeview(f2, selectmode ='browse')
+        self.tree1.pack(side ='right') 
+        self.tree1.place(x=505,y=60)
+        self.tree1["columns"] = ("1", "2", "3","4","5","6") 
+
+        self.tree1['show'] = 'headings'
+
+        self.tree1.column("1", width = 25, anchor ='c') 
+        self.tree1.column("2", width = 90, anchor ='se') 
+        self.tree1.column("3", width = 90, anchor ='se') 
+        self.tree1.column("4", width = 90, anchor ='se')
+        self.tree1.column("5", width = 90, anchor ='se')
+        self.tree1.column("6", width = 90, anchor ='se')
+
+        self.tree1.heading("1", text ="PID") 
+        self.tree1.heading("2", text ="Name") 
+        self.tree1.heading("3", text ="Category") 
+        self.tree1.heading("4", text ="Qty") 
+        self.tree1.heading("5", text ="Price")        
+        self.tree1.heading("6", text ="Descripction")   
+        self.fill_contacts_treeview()
+
+    def add_data(self):
+        pname = self.e2.get()
+        cat=self.cb1.get()
+        price = self.e4.get()
+        quan = self.spin2.get()
+        desc = self.e3.get(1.0,END)
+
+        if(pname=="" and cat=="" and price=="" and quan=="" and desc==""):
+            messagebox.showinfo("Add Product Status","All Fields are mandatory to fill...! ")
+        else:
+            dbcon=MySQLdb.connect('localhost','root','dbz1234','alphadb')
+            cursor=dbcon.cursor()
+            cursor.execute("use alphadb")
+            cursor.execute("insert into product(product_name,category,price,quantity,description) values('"+pname+"','"+cat+"','"+price+"','"+quan+"','"+desc+"')")
+            cursor.execute("commit")
+
+            self.e2.delete(0,'end')
+            self.cb1.delete(0,'end')
+            self.e4.delete(0,'end')
+            self.spin2.delete(0,'end')
+            self.e3.delete(1.0,'end')
+            self.fill_contacts_treeview()
+
+
+            messagebox.showinfo("Success Message","Data Saved Successfully")
+            dbcon.close()
+            AddProduct()
+
+        #dbcon.close()
+    def fill_contacts_treeview(self):
+        for contact in self.tree1.get_children():
+            self.tree1.delete(contact)
+        mydb=MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor = mydb.cursor()
+
+        cursor.execute("select * from product")
+
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value = contact)
+
+
+    #product master-update
+class UpdateProduct(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+
+        self.title("")
+        self.geometry('1050x690+200+10')
+        self.resizable(FALSE, FALSE)
+
+        f1 = Frame(self, borderwidth=6,bg="#D3D3D3")
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="#A9A9A9", highlightbackground="#696969", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="white")
+        l1 = Label(f3, text="Update Product", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+        
+        f41=Frame(f3, borderwidth=6,bg='#696969')
+        l21 = Label(f41, text="Updated product....!",bg='#696969')
+        l21.pack(side=TOP, anchor='sw')
+        f51 = Frame(f41, borderwidth=4,bg='#696969', relief=GROOVE)
+        self.l20 = Label(f51, text=" Product ID",bg='#696969')
+        self.l20.grid(row=0, column=0,padx=20,pady=20)
+        self.e2 = Entry(f51, width=20, font=(NONE, 15))
+        self.e2.grid(row=0, column=1, padx=20)
+        btn=Button(f51,text="Search",bg="#D3D3D3")
+        btn.grid(row=0,column=2,padx=20)
+        f51.pack()
+        f41.pack(padx=20, pady=10)
+        
+        f4 = Frame(f3, borderwidth=6,bg="#A9A9A9")
+        l2 = Label(f4, text="Enter Updated product details here....!",bg="#A9A9A9")
+        l2.pack(side=TOP, anchor='sw')
+        f5 = Frame(f4, borderwidth=4,bg="#A9A9A9", relief=GROOVE)
+        
+        var=StringVar()
+        var.set('Select...')
+        
+        self.l31 = Label(f5, text=" Product Name",bg="#A9A9A9")
+        self.l31.grid(row=0, column=0,padx=40,pady=20)
+        self.e5 = Entry(f5, width=20, font=(NONE, 15))
+        self.e5.grid(row=0, column=1, padx=30)
+        
+
+        self.l32 = Label(f5, text="Category",bg="#A9A9A9")
+        self.l32.grid(row=1,column=0,padx=40,pady=20)
+        self.cb1=Combobox(f5,values=["Bakery","Vegetables","Fruits"],textvariable=var)
+        self.cb1.grid(row=1, column=1, padx=30)
+        
+        self.l33 = Label(f5, text="Price",bg="#A9A9A9")
+        self.l33.grid(row=2, column=0, padx=40, pady=20)
+        self.e4 = Entry(f5, width=20, font=(NONE, 15))
+        self.e4.grid(row=2, column=1, padx=30)
+        
+        self.l34 = Label(f5, text="Quantity",bg="#A9A9A9")
+        self.l34.grid(row=3, column=0, padx=40, pady=20)
+        self.spin2= Spinbox(f5,bg='white',fg='black', from_=0, to=50)
+        self.spin2.grid(row=3, column=1, padx=30)
+
+        self.l35 = Label(f5, text="Description",bg="#A9A9A9")
+        self.l35.grid(row=4, column=0, padx=40, pady=20)
+        self.e3 = Text(f5, height=4, width=20, font=(NONE, 15),exportselection=0)
+        self.e3.grid(row=4, column=1, padx=30)    
+             
+
+        f5.pack()
+        f4.pack(padx=20, pady=10)
+        f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue",background="#333333", highlightthickness=2)
+        B1 = Button(f6, text="UPDATE PRODUCT",bg="#00FFFF",command=self.update_data)
+        B1.grid(row=0, column=0, padx=30,pady=5)
+
+        f6.pack(fill=X, padx=20,pady=10)
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="white")
+        
+        self.tree1 = ttk.Treeview(f1, selectmode ='browse')
+        self.tree1.pack(side ='right') 
+        self.tree1.place(x=525,y=205)
+        self.tree1["columns"] = ("1", "2", "3","4","5","6") 
+
+        self.tree1['show'] = 'headings'
+
+        self.tree1.column("1", width = 25, anchor ='c') 
+        self.tree1.column("2", width = 90, anchor ='se') 
+        self.tree1.column("3", width = 90, anchor ='se') 
+        self.tree1.column("4", width = 90, anchor ='se')
+        self.tree1.column("5", width = 90, anchor ='se')
+        self.tree1.column("6", width = 90, anchor ='se')
+        
+        self.tree1.heading("1", text ="PID") 
+        self.tree1.heading("2", text ="Name") 
+        self.tree1.heading("3", text ="QTY") 
+        self.tree1.heading("4", text ="Category") 
+        self.tree1.heading("5", text ="Price")        
+        self.tree1.heading("6", text ="Descripction")    
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+        self.fill_contacts_treeview()
+        
+    def update_data(self):
+        pid = self.e2.get()
+        pname = self.e5.get()
+        cat=self.cb1.get()
+        price = self.e4.get()
+        quan = self.spin2.get()
+        desc = self.e3.get(1.0,END)
+        
+        dbcon=MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor=dbcon.cursor()
+        cursor.execute("use alphadb")
+        cursor.execute("UPDATE product SET product_name='"+pname+"',category='"+cat+"',price='"+price+"',quantity='"+quan+"',description='"+desc+"' WHERE uid='"+pid+"' ")
+        cursor.execute("commit")
+
+        self.e2.delete(0,'end')
+        self.e5.delete(0,'end')
+        self.cb1.delete(0,'end')
+        self.e4.delete(0,'end')
+        self.spin2.delete(0,'end')
+        self.e3.delete(1.0,'end')
+        self.fill_contacts_treeview()
+
+
+        messagebox.showinfo("Success Message","Data Updated Successfully")
+        dbcon.close()
+        UpdateProduct()
+    
+    def fill_contacts_treeview(self):
+        for contact in self.tree1.get_children():
+            self.tree1.delete(contact)
+        mydb=MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor = mydb.cursor()
+
+        cursor.execute("select * from product")
+
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value = contact)
+
+
+            
+            
+            
+            
+
+        #product_master-delete
+class DeleteProduct(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+
+        self.title("")
+        self.geometry('1050x600+200+100')
+        self.resizable(FALSE, FALSE)
+
+        f1 = Frame(self, borderwidth=6,bg="#D3D3D3")
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="#A9A9A9", highlightbackground="#696969", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="white",relief="solid")
+        l1 = Label(f3, text="Delete Product", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+        
+        f41=Frame(f3, borderwidth=6,bg='#696969')
+        l21 = Label(f41, text="Delete product....!",bg='#696969')
+        l21.pack(side=TOP, anchor='sw')
+        f51 = Frame(f41, borderwidth=4,bg='#696969', relief=GROOVE)
+        l20 = Label(f51, text=" Product ID",bg='#696969')
+        l20.grid(row=0, column=0,padx=20,pady=20)
+        self.e2 = Entry(f51, width=20, font=(NONE, 15))
+        self.e2.grid(row=0, column=1, padx=20)
+        btn=Button(f51,text="Search",bg="#D3D3D3",command=self.delete_data)
+        btn.grid(row=0,column=2,padx=20)
+        f51.pack()
+        f41.pack(padx=20, pady=10)
+        
+        
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="white")
+        
+        self.tree1 = ttk.Treeview(f2, selectmode ='browse')
+        self.tree1.pack(side ='right') 
+        self.tree1.place(x=20,y=200)
+        self.tree1["columns"] = ("1", "2", "3","4","5","6") 
+
+        self.tree1['show'] = 'headings'
+
+        self.tree1.column("1", width = 70, anchor ='c') 
+        self.tree1.column("2", width = 180, anchor ='c') 
+        self.tree1.column("3", width = 150, anchor ='c') 
+        self.tree1.column("4", width = 180, anchor ='c')
+        self.tree1.column("5", width = 150, anchor ='c')
+        self.tree1.column("6", width = 230, anchor ='c')
+        
+        self.tree1.heading("1", text ="PID") 
+        self.tree1.heading("2", text ="Name") 
+        self.tree1.heading("3", text ="QTY") 
+        self.tree1.heading("4", text ="Category") 
+        self.tree1.heading("5", text ="Price")        
+        self.tree1.heading("6", text ="Descripction")   
+        self.fill_contacts_treeview()
+        
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+    def delete_data(self):
+        pid = self.e2.get()
+
+        if(pid==""):
+            messagebox.showinfo("Delete Product Status","Field are mandatory to fill...! ")
+        else:
+            dbcon=MySQLdb.connect('localhost','root','dbz1234','alphadb')
+            cursor=dbcon.cursor()
+            cursor.execute("use alphadb")
+            cursor.execute("DELETE FROM product WHERE uid= '"+pid+"' ")
+            cursor.execute("commit")
+
+            self.e2.delete(0,'end')
+            self.fill_contacts_treeview()
+
+
+            messagebox.showinfo("Success Message","Data Deleted Successfully")
+            dbcon.close()
+            DeleteProduct()
+
+   
+    def fill_contacts_treeview(self):
+        for contact in self.tree1.get_children():
+            self.tree1.delete(contact)
+        mydb=MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor = mydb.cursor()
+
+        cursor.execute("select * from product")
+
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value = contact)
+
+    #product master- View product
+    
+    
+class ViewProduct(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+
+        self.title("")
+        self.geometry('1350x600+10+50')
+        self.resizable(FALSE, FALSE)
+
+        f1 = Frame(self, borderwidth=6, bg="#D3D3D3")
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="#A9A9A9", highlightbackground="#696969", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="white", relief="solid")
+        l1 = Label(f3, text="View/Search Product", font=(NONE, 14), bd=1, relief="solid", padx=12, pady=6)
+        l1.pack(pady=8)
+
+        f4 = Frame(f3, borderwidth=6)
+
+        f41 = Frame(f4, borderwidth=6, bg='#696969')
+        l21 = Label(f41, text="Search by product ID....!", bg='#696969')
+        l21.pack(side=TOP, anchor='sw')
+        f51 = Frame(f41, borderwidth=4, bg='#696969')
+        l20 = Label(f51, text="Enter Product ID", bg='#696969')
+        l20.grid(row=0, column=0, padx=20, pady=20)
+        self.e1 = Entry(f51, width=20, font=(NONE, 15))
+        self.e1.grid(row=0, column=1, padx=20)
+        btn = Button(f51, text="Search", bg="#D3D3D3",command=self.fill_contacts_treeview)
+        btn.grid(row=1, column=1, padx=20)
+        f51.pack()
+        f41.pack(padx=10, pady=20, side=LEFT)
+
+        f42 = Frame(f4, borderwidth=6, bg='#696969')
+        l22 = Label(f42, text="Search by product name....!", bg='#696969')
+        l22.pack(side=TOP, anchor='sw')
+        f52 = Frame(f42, borderwidth=4, bg='#696969')
+        l23 = Label(f52, text=" Product Name", bg='#696969')
+        l23.grid(row=0, column=0, padx=20, pady=20)
+        self.e2 = Entry(f52, width=20, font=(NONE, 15))
+        self.e2.grid(row=0, column=1, padx=20)
+        btn = Button(f52, text="Search", bg="#D3D3D3",command=self.view_data_name)
+        btn.grid(row=1, column=1, padx=20)
+        f52.pack()
+        f42.pack(padx=10, pady=20, side=LEFT)
+
+        var = StringVar()
+        var.set('Select...')
+
+        f43 = Frame(f4, borderwidth=6, bg='#696969')
+        l24 = Label(f43, text="Search by product category....!", bg='#696969')
+        l24.pack(side=TOP, anchor='sw')
+        f53 = Frame(f43, borderwidth=4, bg='#696969')
+        l25 = Label(f53, text="Category")
+        l25.grid(row=0, column=0, padx=40, pady=20)
+        self.cb1 = Combobox(f53, values=["Bakery", "Vegetables", "Fruits"], textvariable=var)
+        self.cb1.grid(row=0, column=1, padx=30)
+        btn = Button(f53, text="Search", bg="#D3D3D3",command=self.view_data_category)
+        btn.grid(row=1, column=1, padx=20)
+        f53.pack()
+        f43.pack(padx=10, pady=20, side=LEFT)
+
+        f4.pack(padx=20, pady=10)
+
+        self.tree1 =Treeview(f2, selectmode='browse')
+        self.tree1.pack(side='right')
+        self.tree1.place(x=50, y=300)
+        self.tree1["columns"] = ("1", "2", "3", "4", "5", "6", "7")
+
+        self.tree1['show'] = 'headings'
+
+        self.tree1.column("1", width=90, anchor='c')
+        self.tree1.column("2", width=180, anchor='c')
+        self.tree1.column("3", width=165, anchor='c')
+        self.tree1.column("4", width=180, anchor='c')
+        self.tree1.column("5", width=165, anchor='c')
+        self.tree1.column("6", width=180, anchor='c')
+        self.tree1.column("7", width=180, anchor='c')
+
+        self.tree1.heading("1", text="PID")
+        self.tree1.heading("2", text="NAME")
+        self.tree1.heading("3", text="QUANTITY")
+        self.tree1.heading("4", text="CATEGORY")
+        self.tree1.heading("5", text="PRICE")
+        self.tree1.heading("6", text="DESCRIPTION")
+        self.tree1.heading("7", text="IMAGE")
+        
+        f3.pack(side=LEFT, fill=Y)
+        
+        mydb=MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor = mydb.cursor()
+
+        cursor.execute("select * from product")
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value=contact)
+
+        
+
+
+    def fill_contacts_treeview(self):
+
+        for contact in self.tree1.get_children():
+            self.tree1.delete(contact)
+        mydb =MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor = mydb.cursor()
+        t=self.e1.get()
+        print(t)
+        cursor.execute("select * from product where uid ='" +t+ "'  ")
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value=contact)
+
+    def view_data_name(self):
+        for contact in self.tree1.get_children():
+            self.tree1.delete(contact)
+        mydb = MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor = mydb.cursor()
+        t = self.e2.get()
+        print(t)
+        cursor.execute("select * from product where product_name='" + t + "'  ")
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value=contact)
+
+    def view_data_category(self):
+        for contact in self.tree1.get_children():
+            self.tree1.delete(contact)
+        mydb = MySQLdb.connect('localhost','root','dbz1234','alphadb')
+        cursor = mydb.cursor()
+        t = self.cb1.get()
+        print(t)
+        cursor.execute("select * from product where category='" + t + "'  ")
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value=contact)
+    
+    
+    
+    
+    #generate order
+class GenerateOrder(Tk):
+
+        
+    
+    def __init__(self):
+        
+        Tk.__init__(self)
+
+        self.title(" ")
+        self.geometry('990x500+200+100')
+        self.resizable(0,0)
+        self.iconbitmap(r"E:\SHE ARISE\Project-Alpha Inventory System\basket.ico")
+        
+        f1 = Frame(self, borderwidth=6)
+        f1.pack(fill=BOTH, expand=TRUE)
+
+        f2 = Frame(f1, bg="white", highlightbackground="green", highlightthickness=1)
+        f2.pack(padx=20, pady=20, fill=BOTH, expand=TRUE)
+
+        f3 = Frame(f2, bg="White")
+        self.l1 = Label(f1, text="Generate Order", font=('Arial', 12,'bold'), bd=1,bg="#00FFFF")
+        self.l1.place(x=40,y=10)
+
+        f4 = Frame(f3, borderwidth=6)
+        self.l2 = Label(f4, text="Order Details")
+        self.l2.pack(side=TOP, anchor='sw')
+        
+        f5 = Frame(f4, borderwidth=4, relief=GROOVE)
+
+        var1=StringVar()
+        var1.set("")
+
+        var2=StringVar()
+        var2.set("")
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+
+        var3="select name from customer"
+        
+        cursor.execute(var3)
+        result1 = cursor.fetchall()
+        
+        var4="select product_name from product"
+        
+        cursor.execute(var4)
+        result4 = cursor.fetchall()
+        print(result4)
+        
+        
+        
+        self.l31 = Label(f5, text=" Customer Name")
+        self.l31.grid(row=0, column=0,padx=40,pady=20)
+
+        self.cb1 = Combobox(f5, width=20, values=(result1) ,font=(NONE, 15),textvariable=var1)
+        self.cb1.grid(row=0, column=1, padx=30)
+        
+        self.l32 = Label(f5, text="Product Name")
+        self.l32.grid(row=1,column=0,padx=40,pady=20)
+        self.cb2=Combobox(f5,width=20,font=(NONE,15),values=result4,textvariable=var2)
+        #self.cb2 =Combobox(f5, width=20,font=(NONE, 15),values=(result4),textvariable=var2)
+        self.cb2.grid(row=1, column=1, padx=30)
+        
+        
+        
+        self.l33 = Label(f5, text="Quantity")
+        self.l33.grid(row=2, column=0, padx=40, pady=20)
+        self.spin= Spinbox(f5,bg='white',fg='black', from_=0, to=50)
+        self.spin.grid(row=2, column=1, padx=30)
+        
+        self.l34 = Label(f5, text="Total Price")
+        self.l34.grid(row=3, column=0, padx=40, pady=20)
+        self.e1 = Entry(f5, width=20, font=(NONE, 15))
+        self.e1.grid(row=3, column=1, padx=30)
+
+        #p1=self.cb2.get()
+        #print(p1,"@@@")
+        #var5="select price from product where product_name=
+        
+        #var5="select price from product where product_name= '"+self.cb2.get()+"' "
+        #cursor.execute(var5)
+        #result5 = cursor.fetchone()
+        #print(result5)
+        #p1=self.cb2.get()
+        #print(p1,"********")
+        #print(self.cb1.get(),"########")
+        
+        mydb.commit()
+        mydb.close()
+        
+        
+        
+        f5.pack()
+        f4.pack(padx=20, pady=20)
+        f6 = Frame(f3, borderwidth=4, highlightbackground="skyblue",background="#333333", highlightthickness=2)
+        self.B1 = Button(f6, text="SAVE",bg="#00FFFF",command=self.SAVE)
+        self.B1.grid(row=0, column=0, padx=30,pady=5)
+        self.B2 = Button(f6, text="RESET",bg="#00FFFF",command=self.RESET)
+        self.B2.grid(row=0, column=1, padx=30,pady=5)
+
+        self.btn = Button(f1,text='Generate Order',bg='Gainsboro',fg='black',font=('Arial',10),bd='4',command=self.generate)
+        self.btn.place(x=350,y=420)  
+        
+        self.lbl10=Label(f1,text='Grand Total',bg='white',fg='black',font=('arial',10))
+        self.lbl10.place(x=540,y=420)
+        
+        self.total=Entry(f1,bd=4,bg="white",fg="black",font=("arial",10))
+        self.total.place(x=650,y=420)
+        
+        
+        f6.pack(fill=X, padx=20)
+        f3.pack(side=LEFT, fill=Y)
+        f7 = Frame(f2, relief="solid", bg="white")
+        f7.pack(side=TOP, fill=BOTH, expand=TRUE)
+        
+        #create striped row tags
+        #tree1.tag_configure(oddrow, background='white')
+        #tree1.tag_configure(evenrow, background='skyblue')        
+        
+        #styling
+        
+        #self.style=ttk.Style()
+        #self.style.theme_use("clam")
+        #self.style.configure("Treeview",bg="silver",fg="black",rowheight=25,fieldbackground="silver")
+        #self.style.map("Treeview",background=[('selected','blue')])
+        
+        self.tree1 = ttk.Treeview(f2, selectmode ='browse')
+        self.tree1.pack(side ='right') 
+        self.tree1.place(x=545,y=41)
+
+        # Defining number of columns 
+        self.tree1["columns"] = ("1", "2", "3","4","5") 
+
+        # Defining heading 
+        self.tree1['show'] = 'headings'
+
+        # Assigning the width and anchor to  the 
+        # respective columns 
+        self.tree1.column("1", width = 60, anchor ='c') 
+        self.tree1.column("2", width = 60, anchor ='c') 
+        self.tree1.column("3", width = 70, anchor ='c') 
+        self.tree1.column("4", width = 100, anchor ='c')
+        self.tree1.column("5", width = 60, anchor ='c')
+        #self.tree1.column("6", width = 60, anchor ='c')
+        # Assigning the heading names to the  
+        # respective columns 
+        self.tree1.heading("1", text ="PID") 
+        self.tree1.heading("2", text ="ProductName")
+        self.tree1.heading("3", text ="CustomerName") 
+        self.tree1.heading("4", text ="Quantity") 
+        self.tree1.heading("5", text ="Price") 
+        #self.tree1.heading("6", text ="Price")        
+ 
+       
+        #tree1.insert("", 'end', text ="L1", values =("101", "Cookies", "25","Bakery","80"))
+        #tree1.insert("", 'end', text ="L1", values =("102", "Cookies", "25","Bakery","180"))
+        #use sql commands here to insert items in the table
+        
+    def fill_contacts_treeview(self):
+        for contact in self.tree1.get_children():
+            self.tree1.delete(contact)
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+
+        cursor.execute("select * from orders")
+
+
+        contacts = cursor.fetchall()
+        mydb.commit()
+        mydb.close()
+        for contact in contacts:
+            self.tree1.insert("", END, value = contact)
+
+        
+        
+
+    def generate(self):
+        
+        p1=self.e1.get()
+        p2=self.spin.get()
+        p3=int(p1)
+        p4=int(p2)
+        self.GTotal=p3*p4
+        self.total.insert(END,self.GTotal)
+        messagebox.showinfo("Success","Order generated successfully....!!")
+        
+    def SAVE(self):
+        mydb = MySQLdb.connect(host='localhost', user='root', password='dbz1234', database='alphadb')
+        cursor = mydb.cursor()
+        price=self.e1.get()
+        pname=self.cb2.get()
+        cname=self.cb1.get()
+        quant=self.spin.get()
+        cursor.execute("use alphadb")
+        cursor.execute("insert into orders (Customer_Name,Product_Name,Quantity,Price) values('"+cname+"','"+pname+"','"+quant+"','"+price+"'")
+        #print(result2)
+        #self.fill_contacts_treeview()
+        mydb.commit()
+        self.e1.delete(0,'end')
+        self.cb1.delete(0,'end')
+        self.cb2.delete(0,'end')
+        self.spin.delete(0,'end')
+        self.total.delete(0,'end')
+        self.fill_contacts_treeview()
+        #messagebox.showinfo("Success","Data Saved successfully....!!")
+        #cursor.execute(select sum(Price)from orders where Customer_Name='"+cname+"')
+        mydb.close()
+        
+        
+        
+    def RESET(self):
+        self.e1.delete(0,'end')
+        self.cb1.delete(0,'end')
+        self.cb2.delete(0,'end')
+        self.spin.delete(0,'end')
+        self.total.delete(0,'end')    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+            
+            
+        
+        
+        
+
+    
+class AlphaInventory():
+    def exit(self): 
+    #root.geometry("100x100") 
+        response = messagebox.askquestion("Confirm","Do you really want to exit?",icon='warning') 
+        Label(window,text=response).pack()
+        if response=="yes":
+            window.destroy() 
+            #label(root,text=root.destroy).pack() 
+        else:
+             messagebox.showinfo('Return','You will now return to the application screen')
+
+    def profileaccount(self):
+        au=AdminAccDetails()
+        au.mainloop()
+        
+    def profilepersonal(self):
+        ap=AdminPersonalDetails()
+        ap.mainloop()
+        
+    def useraccount(self):
+        t=profile()
+        t.mainloop()
+
+        
+        
+    def userpersonal(self):
+        t1=UserPersonalDetails()
+        t1.mainloop()
+    
+    def updatecustomer(self):
+        lg=Loginwindow()
+        lg.mainloop()
+ 
+    def addcustomer(self):
+        ac=CustomerAccDetails()
+        ac.mainloop()
+
+    
+    def addproduct(self):
+        ad=AddProduct()
+        ad.mainloop()
+
+    
+    def viewproduct(self):
+        vp=ViewProduct()
+        vp.mainloop()
+        
+    def updateproduct(self):
+        up=UpdateProduct()
+        up.mainloop()
+    
+    def deleteproduct(self):
+        dp=DeleteProduct()
+        dp.mainloop()
+        
+        
+    def generate_reports(self):
+        window = Tk()
+        window.title('Generate Report')
+        window.geometry('950x500+200+100')
+        window.config(bg='Aliceblue')
+        window.resizable(0,0)
+        window.iconbitmap(r"E:\SHE ARISE\Project-Alpha Inventory System\report.ico") 
+        window.mainloop()
+          
+    def generate_order(self):
+        go=GenerateOrder()
+        go.mainloop()
+    
+
+
+        
+#============== MenuBar =======================================
+        chooser = Menu()
+        item1 = Menu(tearoff=0)
+        item1.add_command(label='User Account Details',command=self.useraccount)
+        item1.add_separator()
+        item1.add_command(label='User Personal Details',command=self.userpersonal)
+
+        item2 = Menu(tearoff=0)
+        item2.add_command(label='Admin Account Details',command=self.profileaccount)
+        item2.add_separator()
+        item2.add_command(label='Admin Personal Details',command=self.profilepersonal)
+        
+        item3 = Menu(tearoff=0)
+        item3.add_command(label='Add Customer',command=self.addcustomer)
+        item3.add_separator()
+        item3.add_command(label='Update/Delete Customer',command=self.updatecustomer)
+        item4 = Menu(tearoff=0)
+        item4.add_command(label='Add Product',command=self.addproduct)
+        item4.add_command(label='View Product',command=self.viewproduct)
+        item4.add_command(label='Update Product',command=self.updateproduct)
+        item4.add_separator()
+        item4.add_command(label='Delete Product',command=self.deleteproduct)
+        
+        item5 = Menu(tearoff=0)
+        item5.add_command(label='Generate Order',command=self.generate_order)
+
+        
+        item6 = Menu(tearoff=0)
+        item6.add_command(label='Generate Reports',command=self.generate_reports)
+
+        
+        item7 = Menu(tearoff=0)
+        item7.add_command(label='Exit',command=self.exit)
+        
+        chooser.add_cascade(label='User Profile',menu=item1)
+        chooser.add_cascade(label='Admin Master',menu=item2)
+        chooser.add_cascade(label='Customer Master',menu=item3)
+        chooser.add_cascade(label='Product Master',menu=item4)
+        chooser.add_cascade(label='Order Master',menu=item5)
+        chooser.add_cascade(label='Reports',menu=item6)
+        chooser.add_cascade(label='Exit',menu=item7)
+        
+        win.config(menu=chooser)
+
+if __name__ ==  '__main__':
+    window = Tk()
+    AlphaInventory()
+    window.title('Alpha Inventory System...!')
+
+    window.geometry('1280x720+10+8')
+
+    window.iconbitmap(r"E:\SHE ARISE\Project-Alpha Inventory System\shop.ico")
+    
+    
+    Canvas(window, bg="blue", height=768, width=1366) 
+    filename = PhotoImage(file = "E:\SHE ARISE\Project-Alpha Inventory System\p1.png")
+    background_label = Label(window, image=filename)
+    background_label.place(x=0, y=0, relwidth=1, relheight=1) 
+    window.resizable(0,0) 
+    window.mainloop()
